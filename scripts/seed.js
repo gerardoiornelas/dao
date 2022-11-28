@@ -6,25 +6,7 @@
 // global scope, and execute the script.
 const hre = require("hardhat");
 
-async function main() {
-  const NAME = "Dapp University";
-  const SYMBOL = "DAPP";
-  const MAX_SUPPLY = "1000000";
-
-  // Deploy Token
-  const Token = await hre.ethers.getContractFactory("Token");
-  let token = await Token.deploy(NAME, SYMBOL, MAX_SUPPLY);
-
-  await token.deployed();
-  console.log(`Token deployed to: ${token.address}\n`);
-
-  // Deploy DAO
-  const DAO = await hre.ethers.getContractFactory("DAO");
-  let dao = await DAO.deploy(token.address, "500000000000000000000001");
-
-  await dao.deployed();
-  console.log(`DAO deployed to: ${dao.address}\n`);
-}
+async function main() {}
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
