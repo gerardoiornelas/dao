@@ -9,7 +9,7 @@ import {
   metaDescription,
   metaKeywords,
   appTitle,
-} from "../../theme/theme-config";
+} from "../../theme/theme.config";
 
 export default function TopLayout(props) {
   return (

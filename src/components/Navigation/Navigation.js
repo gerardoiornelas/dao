@@ -20,8 +20,8 @@ const Navigation = ({ account }) => {
                   alt={"logo"}
                   sx={{ width: "40px" }}
                 />
-                <Box>
-                  <Typography>WUN Template</Typography>
+                <Box ml={2}>
+                  <Typography>WUN DAO</Typography>
                 </Box>
               </Box>
             </Grid>

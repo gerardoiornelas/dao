@@ -7,11 +7,11 @@ const metaDescription = "Boilerplate for Web3 development";
 const metaKeywords = "react, hardhat, solidity, web3";
 
 const googleFonts =
-  "https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap";
+  "https://fonts.googleapis.com/css2?family=Space+Mono&display=swap";
 
-const fontFamilies = "'Domine', serif,'Quicksand', sans-serif";
-const headlineFont = "'Domine', serif";
-const bodyFont = "'Quicksand', sans-serif";
+const fontFamilies = "'Space Mono', monospace";
+const headlineFont = "'Space Mono', monospace";
+const bodyFont = "'Space Mono', monospace";
 
 const headlineFontStyles = {
   fontFamily: headlineFont,
