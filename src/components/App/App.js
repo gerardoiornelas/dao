@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Grid, Box, Typography, Container } from "@mui/material";
+import { Box, Typography, Container } from "@mui/material";
 import { ethers } from "ethers";
 
 // Components
+import { RowCol } from "../RowCol";
 import { Navigation } from "../Navigation";
 import { Loading } from "../Loading";
 
@@ -13,16 +14,19 @@ import DAO_ABI from "../../abis/DAO.json";
 import config from "../../config.json";
 
 function App() {
+  const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
   const [dao, setDao] = useState(0);
   const [treasuryBalance, setTreasuryBalance] = useState(0);
+  const [proposals, setProposals] = useState(null);
+  const [quorum, setQuorum] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
   const loadBlockchainData = async () => {
     // Initiate provider
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-
+    setProvider(provider);
     // Initiate Contract
     const dao = new ethers.Contract(
       config[31337].dao.address,
@@ -31,16 +35,32 @@ function App() {
     );
     setDao(dao);
 
-    // fetch treasurey balance
+    // Fetch treasurey balance
     let treasuryBalance = await provider.getBalance(dao.address);
     treasuryBalance = ethers.utils.formatUnits(treasuryBalance, 18);
     setTreasuryBalance(treasuryBalance);
+
     // Fetch accounts
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
     const account = ethers.utils.getAddress(accounts[0]);
     setAccount(account);
+
+    //Get proposal count
+    const proposalCount = await dao.proposalCount();
+    const proposalItems = [];
+
+    for (let i = 0; i < proposalCount; i++) {
+      // Fetch Proposals
+      const proposal = await dao.proposals(i + 1);
+      proposalItems.push(proposal);
+    }
+    setProposals(proposalItems);
+
+    // Fetch Quorum
+    const quorum = await dao.quorum();
+    setQuorum(quorum);
 
     setIsLoading(false);
   };
@@ -52,16 +72,33 @@ function App() {
   }, [isLoading]);
 
   return (
-    <Box>
+    <RowCol>
       <Navigation account={account} />
 
-      <Container>
-        <Typography variant="h3" align="center">
-          Welcome to our DAO
-        </Typography>
-        {isLoading ? <Loading /> : <></>}
-      </Container>
-    </Box>
+      <RowCol>
+        <Container>
+          <RowCol>
+            <Typography variant="h3" align="center">
+              Welcome to our DAO
+            </Typography>
+          </RowCol>
+          {isLoading ? (
+            <Box display="flex" justifyContent={`center`}>
+              <Loading />
+            </Box>
+          ) : (
+            <RowCol>
+              <RowCol>
+                <Typography
+                  align="center"
+                  sx={{ fontWeight: "strong" }}
+                >{`Treasury Balance: ${treasuryBalance} ETH`}</Typography>
+              </RowCol>
+            </RowCol>
+          )}
+        </Container>
+      </RowCol>
+    </RowCol>
   );
 }
 
