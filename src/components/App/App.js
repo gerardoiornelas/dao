@@ -3,9 +3,11 @@ import { Box, Typography, Container } from "@mui/material";
 import { ethers } from "ethers";
 
 // Components
-import { RowCol } from "../RowCol";
+import { RowCol, Row, Col } from "../RowCol";
 import { Navigation } from "../Navigation";
 import { Loading } from "../Loading";
+import { CreateProposal } from "../CreateProposal";
+import { Proposals } from "../Proposals";
 
 // ABIs: Import your contract ABIs here
 import DAO_ABI from "../../abis/DAO.json";
@@ -76,7 +78,7 @@ function App() {
       <Navigation account={account} />
 
       <RowCol>
-        <Container>
+        <Container maxWidth="xl">
           <RowCol>
             <Typography variant="h3" align="center">
               Welcome to our DAO
@@ -88,11 +90,34 @@ function App() {
             </Box>
           ) : (
             <RowCol>
-              <RowCol>
+              <RowCol mb={4}>
                 <Typography
                   align="center"
                   sx={{ fontWeight: "strong" }}
                 >{`Treasury Balance: ${treasuryBalance} ETH`}</Typography>
+              </RowCol>
+              <Row
+                mb={4}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Col xs={12} md={8}>
+                  <CreateProposal
+                    provider={provider}
+                    dao={dao}
+                    setIsLoading={setIsLoading}
+                  />
+                </Col>
+              </Row>
+              <RowCol>
+                <Proposals
+                  provider={provider}
+                  dao={dao}
+                  proposals={proposals}
+                  quorum={quorum}
+                  setIsLoading={setIsLoading}
+                />
               </RowCol>
             </RowCol>
           )}
