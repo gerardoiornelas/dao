@@ -29,6 +29,7 @@ function App() {
     // Initiate provider
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
+
     // Initiate Contract
     const dao = new ethers.Contract(
       config[31337].dao.address,
@@ -95,6 +96,12 @@ function App() {
                   align="center"
                   sx={{ fontWeight: "strong" }}
                 >{`Treasury Balance: ${treasuryBalance} ETH`}</Typography>
+              </RowCol>
+              <RowCol mb={4}>
+                <Typography
+                  align="center"
+                  sx={{ fontWeight: "strong" }}
+                >{`Quorum: ${quorum}`}</Typography>
               </RowCol>
               <Row
                 mb={4}
