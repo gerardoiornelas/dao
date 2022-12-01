@@ -16,6 +16,7 @@ contract DAO {
         address payable recipient;
         uint256 votes;
         bool finalized;
+        string description;
     }
     uint256 public proposalCount;
     mapping(uint256 => Proposal) public proposals;
@@ -48,10 +49,11 @@ contract DAO {
     function createProposal(
         string memory _name,
         uint256 _amount,
-        address payable _recipient
+        address payable _recipient,
+        string memory _description
     ) external onlyInvestor {
         require(address(this).balance >= _amount);
-
+        require(bytes(_description).length > 0);
         proposalCount++;
         // create propposal (model proposal)
         // take mapping of index propsalCount and assign Proposal Stuct
@@ -61,7 +63,8 @@ contract DAO {
             _amount,
             _recipient,
             0,
-            false
+            false,
+            _description
         );
 
         emit Propose(proposalCount, _amount, _recipient, msg.sender);

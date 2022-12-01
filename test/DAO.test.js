@@ -23,6 +23,8 @@ describe("DAO", () => {
     recipient,
     transaction;
 
+  const proposalDescription = "Proposal description";
+
   beforeEach(async () => {
     // Set up accounts
     let accounts = await ethers.getSigners();
@@ -94,7 +96,12 @@ describe("DAO", () => {
       beforeEach(async () => {
         transaction = await dao
           .connect(investor1)
-          .createProposal("Propsal 1", ether(100), recipient.address);
+          .createProposal(
+            "Propsal 1",
+            ether(100),
+            recipient.address,
+            proposalDescription
+          );
         result = await transaction.wait();
       });
 
@@ -107,6 +114,7 @@ describe("DAO", () => {
         expect(await proposal.id).to.equal(1);
         expect(await proposal.amount).to.equal(ether(100));
         expect(await proposal.recipient).to.equal(recipient.address);
+        expect(await proposal.description).to.equal(proposalDescription);
       });
 
       it("emits propose event", async () => {
@@ -117,11 +125,24 @@ describe("DAO", () => {
     });
 
     describe("Failure", () => {
-      it("rejects invalide amount", async () => {
+      it("rejects invalid amount", async () => {
         await expect(
           dao
             .connect(investor1)
-            .createProposal("Proposal 1", ether(1000), recipient.address)
+            .createProposal(
+              "Proposal 1",
+              ether(1000),
+              recipient.address,
+              proposalDescription
+            )
+        ).to.be.reverted;
+      });
+
+      it("rejects proposal w/no description", async () => {
+        await expect(
+          dao
+            .connect(investor1)
+            .createProposal("Proposal 1", ether(100), recipient.address, 1)
         ).to.be.reverted;
       });
 
@@ -129,7 +150,12 @@ describe("DAO", () => {
         await expect(
           dao
             .connect(user)
-            .createProposal("Proposal 1", ether(100), recipient.address)
+            .createProposal(
+              "Proposal 1",
+              ether(100),
+              recipient.address,
+              proposalDescription
+            )
         ).to.be.reverted;
       });
     });
@@ -140,7 +166,12 @@ describe("DAO", () => {
     beforeEach(async () => {
       transaction = await dao
         .connect(investor1)
-        .createProposal("Propsal 1", ether(100), recipient.address);
+        .createProposal(
+          "Proposal 1",
+          ether(100),
+          recipient.address,
+          proposalDescription
+        );
       result = await transaction.wait();
     });
     describe("Success", () => {
@@ -180,7 +211,12 @@ describe("DAO", () => {
     beforeEach(async () => {
       transaction = await dao
         .connect(investor1)
-        .createProposal("Proposal 1", ether(100), recipient.address);
+        .createProposal(
+          "Proposal 1",
+          ether(100),
+          recipient.address,
+          proposalDescription
+        );
       result = await transaction.wait();
       transaction = await dao.connect(investor1).vote(1);
       result = await transaction.wait();
@@ -228,7 +264,12 @@ describe("DAO", () => {
         // create proposal
         transaction = await dao
           .connect(investor1)
-          .createProposal("Propsal 1", ether(100), recipient.address);
+          .createProposal(
+            "Propsal 1",
+            ether(100),
+            recipient.address,
+            proposalDescription
+          );
         result = await transaction.wait();
 
         // vote
@@ -261,7 +302,12 @@ describe("DAO", () => {
         // create proposal
         transaction = await dao
           .connect(investor1)
-          .createProposal("Propsal 1", ether(100), recipient.address);
+          .createProposal(
+            "Propsal 1",
+            ether(100),
+            recipient.address,
+            proposalDescription
+          );
         result = await transaction.wait();
 
         // vote
