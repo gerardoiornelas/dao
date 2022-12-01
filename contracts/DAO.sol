@@ -20,10 +20,13 @@ contract DAO {
     uint256 public proposalCount;
     mapping(uint256 => Proposal) public proposals;
     mapping(address => mapping(uint256 => bool)) votes;
+    mapping(address => mapping(uint256 => bool)) downVotes;
 
     event Propose(uint id, uint256 amount, address recipient, address creator);
 
     event Vote(uint256 id, address investor);
+
+    event DownVote(uint256 id, address investor);
 
     event Finalize(uint256 id);
 
@@ -79,6 +82,27 @@ contract DAO {
         votes[msg.sender][_id] = true;
         // emit event
         emit Vote(_id, msg.sender);
+    }
+
+    // Vote down
+    function downVote(uint256 _id) external onlyInvestor {
+        // Fetch proposal from mapping by id
+        Proposal storage proposal = proposals[_id];
+
+        // don't let investors down-vote twice
+        require(!downVotes[msg.sender][_id], "already down-voted");
+
+        // don't let investors down-vote a proposal with no votes
+        require(proposal.votes > 0);
+
+        // Update down-votes
+        proposal.votes -= token.balanceOf(msg.sender);
+
+        //track that user has down-voted
+        downVotes[msg.sender][_id] = true;
+
+        //emit event
+        emit DownVote(_id, msg.sender);
     }
 
     // Finalize Proposal

@@ -153,6 +153,7 @@ describe("DAO", () => {
         const proposal = await dao.proposals(1);
         expect(proposal.votes).to.equal(tokens(200000));
       });
+
       it("emits vote event", async () => {
         await expect(transaction)
           .to.emit(dao, "Vote")
@@ -168,6 +169,40 @@ describe("DAO", () => {
         transaction = await dao.connect(investor1).vote(1);
         result = await transaction.wait();
         await expect(dao.connect(investor1).vote(1)).to.be.reverted;
+      });
+    });
+  });
+
+  describe("Down Voting", () => {
+    let transaction, result;
+
+    // Set up test to create proposal and vote on proposal 1
+    beforeEach(async () => {
+      transaction = await dao
+        .connect(investor1)
+        .createProposal("Proposal 1", ether(100), recipient.address);
+      result = await transaction.wait();
+      transaction = await dao.connect(investor1).vote(1);
+      result = await transaction.wait();
+      transaction = await dao.connect(investor2).vote(1);
+      result = await transaction.wait();
+      transaction = await dao.connect(investor3).downVote(1);
+      result = await transaction.wait();
+    });
+
+    describe("Success", () => {
+      it("updates down-vote count", async () => {
+        const proposal = await dao.proposals(1);
+        expect(proposal.votes).to.equal(tokens(200000));
+      });
+    });
+
+    describe("Failure", () => {
+      it("rejects non-investor", async () => {
+        await expect(dao.connect(user).downVote(1)).to.be.reverted;
+      });
+      it("rejects double non-voting", async () => {
+        await expect(dao.connect(investor3).downVote(1)).to.be.reverted;
       });
     });
   });
