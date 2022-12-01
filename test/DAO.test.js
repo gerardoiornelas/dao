@@ -195,12 +195,25 @@ describe("DAO", () => {
         const proposal = await dao.proposals(1);
         expect(proposal.votes).to.equal(tokens(200000));
       });
+
+      it("emits down-vote event", async () => {
+        await expect(transaction)
+          .to.emit(dao, "DownVote")
+          .withArgs(1, investor3.address);
+      });
     });
 
     describe("Failure", () => {
       it("rejects non-investor", async () => {
         await expect(dao.connect(user).downVote(1)).to.be.reverted;
       });
+
+      it("rejects down-voting on proposal with no votes", async () => {
+        transaction = await dao.connect(investor4).downVote(1);
+        result = await transaction.wait();
+        await expect(dao.connect(investor5).downVote(1)).to.be.reverted;
+      });
+
       it("rejects double non-voting", async () => {
         await expect(dao.connect(investor3).downVote(1)).to.be.reverted;
       });
