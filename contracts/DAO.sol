@@ -108,6 +108,13 @@ contract DAO {
         emit DownVote(_id, msg.sender);
     }
 
+    // Get Votes
+    function hasVoted(
+        uint256 _id
+    ) external view onlyInvestor returns (bool voted) {
+        voted = votes[msg.sender][_id];
+    }
+
     // Finalize Proposal
     function finalizeProposal(uint256 _id) external onlyInvestor {
         // fetch proposal

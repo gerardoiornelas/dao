@@ -33,6 +33,12 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
       window.alert("User rejected or transaction reverted");
     }
   };
+
+  const hasVoted = async (_id) => {
+    const signer = await provider.getSigner();
+    return await dao.connect(signer).hasVoted(_id);
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -51,6 +57,7 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
         <TableBody>
           {proposals.map(
             ({ id, name, recipient, amount, finalized, votes }, index) => {
+              let hasAddressVoted = hasVoted(id).then((result) => result);
               return (
                 <TableRow
                   key={cuid()}
@@ -68,7 +75,7 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
                   </TableCell>
                   <TableCell align="right">{votes.toString()}</TableCell>
                   <TableCell align="right">
-                    {!finalized && (
+                    {!finalized && !hasAddressVoted && (
                       <Button
                         size="small"
                         variant="contained"

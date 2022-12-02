@@ -185,6 +185,13 @@ describe("DAO", () => {
         expect(proposal.votes).to.equal(tokens(200000));
       });
 
+      it("checks if has voted", async () => {
+        const connect = await dao.connect(investor2);
+        transaction = await connect.vote(1);
+        result = await transaction.wait();
+        expect(await connect.hasVoted(1)).to.be.true;
+      });
+
       it("emits vote event", async () => {
         await expect(transaction)
           .to.emit(dao, "Vote")
