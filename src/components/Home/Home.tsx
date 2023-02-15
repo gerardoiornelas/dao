@@ -1,61 +1,73 @@
 import React, { useEffect, useState } from "react"
-import _ from "lodash"
+import { Box, Typography, Container, Divider } from "@mui/material"
 import { ethers } from "ethers"
-import {
-  Box,
-  Typography,
-  Container,
-  CircularProgress,
-  Divider,
-} from "@mui/material"
 
+// Components
 import { UIShell } from "../UIShell"
-import { Info } from "../Info"
-import { TokensSoldProgress } from "../TokensSoldProgress"
-import { BuyTokens } from "../BuyTokens"
+import { RowCol, Row, Col } from "../RowCol"
+import { Loading } from "../Loading"
+import { CreateProposal } from "../CreateProposal"
+import { Proposals } from "../Proposals"
 
-import {
-  loadAccount,
-  loadProvider,
-  loadNetwork,
-  loadNft,
-} from "../../store/interactions/blockchainProvider.interactions"
+// ABIs: Import your contract ABIs here
+import DAO_ABI from "../../abis/DAO.json"
 
-import nftAbi from "../../abis/NFT.json"
-import { goerli, hardhat } from "../../networkConfig"
+// Config: Import your network config here
+const nc = require("../../networkConfig")
 
-import { StyledHome } from "./Home.styled"
-
-interface Props {
-  children: React.ReactNode
-}
-
-const Home = ({ children }: Props) => {
-  const networkConfig = process.env.NODE_ENV === "production" ? goerli : hardhat
-  const [balance, setBalance] = useState(0)
-  const [network, setNetwork] = useState(null)
-  // const [provider, setProvider] = useState(null)
-
-  const [price, setPrice] = useState(0)
-  const [maxTokens, setMaxTokens] = useState(0)
-  const [tokensSold, setTokensSold] = useState(0)
+function App() {
+  const networkConfig =
+    process.env.NODE_ENV === "production" ? nc.goerli : nc.hardhat
+  const [provider, setProvider] = useState(null)
+  const [account, setAccount] = useState(null)
+  const [dao, setDao] = useState(0)
+  const [treasuryBalance, setTreasuryBalance] = useState(0)
+  const [proposals, setProposals] = useState(null)
+  const [quorum, setQuorum] = useState(null)
 
   const [isLoading, setIsLoading] = useState(true)
-
-  const network = process.env.NODE_ENV === "production" ? goerli : hardhat
 
   const loadBlockchainData = async () => {
     // Initiate provider
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     setProvider(provider)
 
-    const chainId = await loadNetwork(provider, dispatch)
+    // Initiate Contract
+    const dao = new ethers.Contract(
+      networkConfig.dao.address,
+      DAO_ABI,
+      provider
+    )
+    setDao(dao)
 
-    // account
-    const account = await loadAccount(dispatch)
+    // Fetch treasurey balance
+    let treasuryBalance = await provider.getBalance(dao.address)
+    treasuryBalance = ethers.utils.formatUnits(treasuryBalance, 18)
+    setTreasuryBalance(treasuryBalance)
 
-    //load nft
-    await loadNft(networkConfig.nft.address, nftAbi, provider, dispatch)
+    // Fetch accounts
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    })
+    const account = ethers.utils.getAddress(accounts[0])
+    setAccount(account)
+
+    //Get proposal count
+    const proposalCount = await dao.proposalCount()
+    const proposalItems = []
+
+    for (let i = 0; i < proposalCount; i++) {
+      // Fetch Proposals
+      const proposal = await dao.proposals(i + 1)
+      proposalItems.push(proposal)
+    }
+    setProposals(proposalItems)
+
+    // Fetch Quorum
+    const quorum = await dao.quorum()
+    setQuorum(quorum)
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -66,56 +78,66 @@ const Home = ({ children }: Props) => {
 
   return (
     <UIShell>
-      <Container>
-        <Box>
-          <Container>
+      <RowCol mb={0}>
+        <Container maxWidth="xl">
+          <RowCol mb={0}>
+            <Typography variant="h3" align="center">
+              Welcome to our DAO
+            </Typography>
+            <Typography variant="h6" align="center" color="secondary">
+              A decentralized autonomous organization by Gerardo I. Ornelas
+            </Typography>
             <Box my={4}>
-              <Typography variant="h3" align="center">
-                Introducing GIO Token!
-              </Typography>
-            </Box>
-            {isLoading ? (
-              <CircularProgress />
-            ) : (
-              <Box
-                display="flex"
-                justifyContent="center"
-                flexDirection="column"
-              >
-                <Box display="flex" justifyContent={`center`}>
-                  <Typography>
-                    <strong>Current Price: </strong>
-                    {` ${price} ETH`}
-                  </Typography>
-                </Box>
-                <Box my={4}>
-                  <BuyTokens
-                    provider={provider}
-                    price={price}
-                    crowdsale={crowdsale}
-                    loadBlockchainData={loadBlockchainData}
-                  />
-                </Box>
-                <TokensSoldProgress
-                  tokensSold={tokensSold}
-                  maxTokens={maxTokens}
-                />
-              </Box>
-            )}
-
-            <Box my={2}>
               <Divider />
             </Box>
-            <Box>
-              {account && (
-                <Info account={account} accountBalance={accountBalance} />
-              )}
+          </RowCol>
+          {isLoading ? (
+            <Box display="flex" justifyContent={`center`}>
+              <Loading />
             </Box>
-          </Container>
-        </Box>
-      </Container>
+          ) : (
+            <RowCol mb={0}>
+              <RowCol mb={4}>
+                <Typography
+                  align="center"
+                  sx={{ fontWeight: "strong" }}
+                >{`Treasury Balance: ${treasuryBalance} ETH`}</Typography>
+              </RowCol>
+              <RowCol mb={4}>
+                <Typography
+                  align="center"
+                  sx={{ fontWeight: "strong" }}
+                >{`Quorum: ${quorum}`}</Typography>
+              </RowCol>
+              <Row
+                mb={4}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Col xs={12} md={8}>
+                  <CreateProposal
+                    provider={provider}
+                    dao={dao}
+                    setIsLoading={setIsLoading}
+                  />
+                </Col>
+              </Row>
+              <RowCol mb={0}>
+                <Proposals
+                  provider={provider}
+                  dao={dao}
+                  proposals={proposals}
+                  quorum={quorum}
+                  setIsLoading={setIsLoading}
+                />
+              </RowCol>
+            </RowCol>
+          )}
+        </Container>
+      </RowCol>
     </UIShell>
   )
 }
 
-export default Home
+export default App
