@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Typography, Container } from "@mui/material"
+import { Box, Typography, Container, Divider } from "@mui/material"
 import { ethers } from "ethers"
 
 // Components
@@ -84,6 +84,12 @@ function App() {
             <Typography variant="h3" align="center">
               Welcome to our DAO
             </Typography>
+            <Typography variant="h6" align="center" color="secondary">
+              A decentralized autonomous organization by Gerardo I. Ornelas
+            </Typography>
+            <Box my={4}>
+              <Divider />
+            </Box>
           </RowCol>
           {isLoading ? (
             <Box display="flex" justifyContent={`center`}>
