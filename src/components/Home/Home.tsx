@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, Typography, Container } from "@mui/material"
 import { ethers } from "ethers"
 

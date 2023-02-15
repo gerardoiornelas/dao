@@ -7,10 +7,8 @@ const hardhat = {
   },
 }
 const goerli = {
-  //deployed contract address
   token: {
     address: "0x...",
   },
 }
-
-export { hardhat, goerli }
+module.exports = { hardhat, goerli }

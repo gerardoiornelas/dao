@@ -5,7 +5,7 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat")
-const { goerli, hardhat } = require("../src/networkConfig")
+const nc = require("../src/networkConfig")
 
 const tokens = n => {
   return ethers.utils.parseUnits(n.toString(), "ether")
@@ -14,7 +14,8 @@ const tokens = n => {
 const ether = tokens
 
 async function main() {
-  const networkConfig = process.env.NODE_ENV === "production" ? goerli : hardhat
+  const networkConfig =
+    process.env.NODE_ENV === "production" ? nc.goerli : nc.hardhat
   console.log(`Fetching accounts & network...\n`)
 
   const accounts = await ethers.getSigners()
@@ -32,10 +33,7 @@ async function main() {
   console.log(`Fetching token and transferring to accounts...\n`)
 
   // Fetch deployed token
-  const token = await ethers.getContractAt(
-    "Token",
-    config[chainId].token.address
-  )
+  const token = await ethers.getContractAt("Token", networkConfig.token.address)
   console.log(`Token fetched: ${token.address}\n`)
 
   // Send tokens to investors - each one gets 20%
@@ -51,7 +49,7 @@ async function main() {
   console.log(`Fetching dao...\n`)
 
   // Fetch deployed dao
-  const dao = await ethers.getContractAt("DAO", config[chainId].dao.address)
+  const dao = await ethers.getContractAt("DAO", networkConfig.dao.address)
   console.log(`DAO fetched: ${dao.address}\n`)
 
   // Funder sends Ether to DAO treasury
