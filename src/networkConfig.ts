@@ -8,7 +8,10 @@ const hardhat = {
 }
 const goerli = {
   token: {
-    address: "0x...",
+    address: "0x60436C528e3A06803A596516E06c33E26Af8458A",
+  },
+  dao: {
+    address: "0xCA75a51b44601ebc873e10BeEAa420f06B168c5d",
   },
 }
 module.exports = { hardhat, goerli }
