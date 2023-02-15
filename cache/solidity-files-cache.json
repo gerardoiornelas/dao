@@ -73,10 +73,10 @@
         "Token"
       ]
     },
-    "/Users/ornelastechnologies/Documents/GitHub/dao/contracts/Crowdsale.sol": {
-      "lastModificationDate": 1676496084836,
-      "contentHash": "a4b0f7423abefdfbe3de0ba7a38912a8",
-      "sourceName": "contracts/Crowdsale.sol",
+    "/Users/ornelastechnologies/Documents/GitHub/dao/contracts/Token.sol": {
+      "lastModificationDate": 1676496378527,
+      "contentHash": "2c2c99eceb0429ba297c1181d646a9f2",
+      "sourceName": "contracts/Token.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -101,19 +101,57 @@
         }
       },
       "imports": [
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Token"
+      ]
+    },
+    "/Users/ornelastechnologies/Documents/GitHub/dao/contracts/DAO.sol": {
+      "lastModificationDate": 1676496363219,
+      "contentHash": "18b7d99174556c13e0616e45f1bb79e4",
+      "sourceName": "contracts/DAO.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol",
         "./Token.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
-        "Crowdsale"
+        "DAO"
       ]
     },
-    "/Users/ornelastechnologies/Documents/GitHub/dao/contracts/Token.sol": {
-      "lastModificationDate": 1676496084838,
-      "contentHash": "16fb9fb6771a2413a4f8677618f13bd8",
-      "sourceName": "contracts/Token.sol",
+    "/Users/ornelastechnologies/Documents/GitHub/dao/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1676409827114,
+      "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
+      "sourceName": "hardhat/console.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -139,10 +177,10 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.0"
+        ">= 0.4.22 <0.9.0"
       ],
       "artifacts": [
-        "Token"
+        "console"
       ]
     }
   }
