@@ -3,6 +3,7 @@ import { Box, Typography, Container } from "@mui/material"
 import { ethers } from "ethers"
 
 // Components
+import { UIShell } from "../UIShell"
 import { RowCol, Row, Col } from "../RowCol"
 import { Navigation } from "../Navigation"
 import { Loading } from "../Loading"
@@ -76,7 +77,7 @@ function App() {
   }, [isLoading])
 
   return (
-    <RowCol mb={0}>
+    <UIShell>
       <Navigation account={account} />
 
       <RowCol mb={0}>
@@ -131,7 +132,7 @@ function App() {
           )}
         </Container>
       </RowCol>
-    </RowCol>
+    </UIShell>
   )
 }
 
