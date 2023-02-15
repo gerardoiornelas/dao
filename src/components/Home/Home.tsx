@@ -5,7 +5,6 @@ import { ethers } from "ethers"
 // Components
 import { UIShell } from "../UIShell"
 import { RowCol, Row, Col } from "../RowCol"
-import { Navigation } from "../Navigation"
 import { Loading } from "../Loading"
 import { CreateProposal } from "../CreateProposal"
 import { Proposals } from "../Proposals"
