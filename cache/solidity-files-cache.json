@@ -1,10 +1,10 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/ornelastechnologies/Documents/GitHub/crowdsale-ico/contracts/Crowdsale.sol": {
-      "lastModificationDate": 1676329681452,
-      "contentHash": "a4b0f7423abefdfbe3de0ba7a38912a8",
-      "sourceName": "contracts/Crowdsale.sol",
+    "/Users/ornelastechnologies/Documents/GitHub/dao/contracts/DAO.sol": {
+      "lastModificationDate": 1676496363219,
+      "contentHash": "18b7d99174556c13e0616e45f1bb79e4",
+      "sourceName": "contracts/DAO.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -29,48 +29,14 @@
         }
       },
       "imports": [
+        "hardhat/console.sol",
         "./Token.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
-        "Crowdsale"
-      ]
-    },
-    "/Users/ornelastechnologies/Documents/GitHub/crowdsale-ico/contracts/Token.sol": {
-      "lastModificationDate": 1676329673589,
-      "contentHash": "16fb9fb6771a2413a4f8677618f13bd8",
-      "sourceName": "contracts/Token.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Token"
+        "DAO"
       ]
     },
     "/Users/ornelastechnologies/Documents/GitHub/dao/contracts/Token.sol": {
@@ -108,44 +74,6 @@
       ],
       "artifacts": [
         "Token"
-      ]
-    },
-    "/Users/ornelastechnologies/Documents/GitHub/dao/contracts/DAO.sol": {
-      "lastModificationDate": 1676496363219,
-      "contentHash": "18b7d99174556c13e0616e45f1bb79e4",
-      "sourceName": "contracts/DAO.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "hardhat/console.sol",
-        "./Token.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "DAO"
       ]
     },
     "/Users/ornelastechnologies/Documents/GitHub/dao/node_modules/hardhat/console.sol": {
