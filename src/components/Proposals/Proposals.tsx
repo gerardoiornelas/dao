@@ -71,7 +71,6 @@ const Proposals = ({
         <TableBody>
           {proposals.map(
             ({ id, name, recipient, amount, finalized, votes }, index) => {
-              let hasAddressVoted = hasVoted(id).then(result => result)
               return (
                 <TableRow
                   key={cuid()}
@@ -89,7 +88,7 @@ const Proposals = ({
                   </TableCell>
                   <TableCell align="right">{votes.toString()}</TableCell>
                   <TableCell align="right">
-                    {!finalized && !hasAddressVoted && (
+                    {!finalized && (
                       <Button
                         size="small"
                         variant="contained"

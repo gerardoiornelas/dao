@@ -13,10 +13,11 @@ import { Proposals } from "../Proposals"
 import DAO_ABI from "../../abis/DAO.json"
 
 // Config: Import your network config here
-import { goerli, hardhat } from "../../networkConfig"
+const nc = require("../../networkConfig")
 
 function App() {
-  const networkConfig = process.env.NODE_ENV === "production" ? goerli : hardhat
+  const networkConfig =
+    process.env.NODE_ENV === "production" ? nc.goerli : nc.hardhat
   const [provider, setProvider] = useState(null)
   const [account, setAccount] = useState(null)
   const [dao, setDao] = useState(0)
@@ -77,8 +78,6 @@ function App() {
 
   return (
     <UIShell>
-      <Navigation account={account} />
-
       <RowCol mb={0}>
         <Container maxWidth="xl">
           <RowCol mb={0}>
